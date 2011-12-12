@@ -111,7 +111,7 @@ class opProjectConfiguration extends sfProjectConfiguration
     }
 
     $manager->registerConnectionDriver('mysql', 'opDoctrineConnectionMysql');
-    $manager->registerConnectionDriver('sqlsrv', 'Doctrine_Connection_Mssql');
+    $manager->registerConnectionDriver('sqlsrv', 'opDoctrineConnectionMssql');
 
     $this->setupProjectOpenPNEDoctrine($manager);
   }
