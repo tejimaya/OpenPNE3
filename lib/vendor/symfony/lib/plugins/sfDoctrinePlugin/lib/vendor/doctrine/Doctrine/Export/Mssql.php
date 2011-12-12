@@ -461,7 +461,23 @@ class Doctrine_Export_Mssql extends Doctrine_Export
         if (isset($options['foreignKeys'])) {
             foreach ((array) $options['foreignKeys'] as $k => $definition) {
                 if (is_array($definition)) {
+                    $trigger = '';
+
+                    if ($name == $definition['foreignTable']) {
+                        if ($definition['onDelete']) {
+                            $trigger = $this->createTriggerForSelfCascading($name, $definition, $definition['onDelete']);
+
+                            $definition['onDelete'] = 'NO ACTION';
+                        } elseif ($definition['onUpdate']) {
+                            throw new RuntimeException('Not implemented');
+                        }
+                    }
+
                     $sql[] = $this->createForeignKeySql($name, $definition);
+
+                    if ($trigger) {
+                        $sql[] = $trigger;
+                    }
                 }
             }
         }
@@ -520,5 +536,31 @@ class Doctrine_Export_Mssql extends Doctrine_Export
         }
         
         return $default;
+    }
+
+    public function createTriggerForSelfCascading($table, $definition, $type)
+    {
+        $table = $this->conn->quoteIdentifier($table);
+        $trigger = $this->conn->formatter->getForeignKeyName($definition['name']).'_trigger';
+        $deletedQuery = 'SELECT d.'.$definition['foreign'].' FROM [deleted] AS d';
+
+        $query = 'CREATE TRIGGER '.$trigger.' ON '.$table.' INSTEAD OF DELETE AS BEGIN';
+
+        $type = strtoupper($type);
+        if ('CASCADE' === $type) {
+            $query .= ' DELETE FROM '.$table.' WHERE '.$definition['local'].' IN ('.$deletedQuery.');';
+        } elseif ('SET NULL' === $type) {
+            $query .= ' UPDATE '.$table.' SET '.$definition['local'].' = NULL WHERE '.$definition['local'].' IN ('.$deletedQuery.');';
+        } elseif ('NO ACTION' === $type) {
+            return '';
+        } else {
+            throw new RuntimeException('Not implemented');
+        }
+
+        $query .= ' DELETE FROM '.$table.' WHERE '.$definition['foreign'].' IN ('.$deletedQuery.');';
+
+        $query .= ' END';
+
+        return $query;
     }
 }
