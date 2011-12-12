@@ -262,8 +262,9 @@ class Doctrine_DataDict_Mssql extends Doctrine_DataDict
         //$unsigned = (isset($field['unsigned']) && $field['unsigned']) ? ' UNSIGNED' : '';
         // MSSQL does not support the UNSIGNED keyword
         $unsigned = '';
-        $comment  = (isset($field['comment']) && $field['comment']) 
-            ? " COMMENT " . $this->conn->quote($field['comment'], 'text') : '';
+
+        // MSQL doesn't support the COMMENT keyword
+        $comment  = '';
 
         $name = $this->conn->quoteIdentifier($name, true);
 
