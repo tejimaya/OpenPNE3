@@ -194,4 +194,30 @@ abstract class opDoctrineRecord extends sfDoctrineRecord implements Zend_Acl_Res
 
     parent::setTableName($tableName);
   }
+
+  public function getPrepared(array $array = array())
+  {
+    $result = parent::getPrepared($array);
+
+    foreach ($result as $field => $data)
+    {
+      if (null === $data)
+      {
+        continue;
+      }
+
+      $type = $this->_table->getTypeOf($field);
+      switch ($type)
+      {
+        case 'string':
+          $result[$field] = (string)$data;
+
+          break;
+        default:
+          // do nothing
+      }
+    }
+
+    return $result;
+  }
 }
