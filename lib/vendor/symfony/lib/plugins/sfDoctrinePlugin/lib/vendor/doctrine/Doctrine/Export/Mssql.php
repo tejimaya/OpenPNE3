@@ -463,9 +463,9 @@ class Doctrine_Export_Mssql extends Doctrine_Export
                 if (is_array($definition)) {
                     $trigger = '';
 
-                    if ($definition['onDelete']) {
+                    if (isset($definition['onDelete'])) {
                         $definition['onDelete'] = 'NO ACTION';
-                    } elseif ($definition['onUpdate']) {
+                    } elseif (isset($definition['onUpdate'])) {
                         if ($name == $definition['foreignTable']) {
                             throw new RuntimeException('Not implemented');
                         }
@@ -536,28 +536,114 @@ class Doctrine_Export_Mssql extends Doctrine_Export
         return $default;
     }
 
-    public function createTriggerForSelfCascading($table, $definition, $type)
+    public function exportSortedClassesSql($classes, $groupByConnection = true)
     {
-        $table = $this->conn->quoteIdentifier($table);
-        $trigger = $this->conn->formatter->getForeignKeyName($definition['name']).'_trigger';
-        $deletedQuery = 'SELECT d.'.$definition['foreign'].' FROM [deleted] AS d';
+        $sql = parent::exportSortedClassesSql($classes, $groupByConnection);
+        $triggers = array();
 
-        $query = 'CREATE TRIGGER '.$trigger.' ON '.$table.' INSTEAD OF DELETE AS BEGIN';
+        $models = Doctrine_Core::filterInvalidModels($classes);
 
-        $type = strtoupper($type);
-        if ('CASCADE' === $type) {
-            $query .= ' DELETE FROM '.$table.' WHERE '.$definition['local'].' IN ('.$deletedQuery.');';
-        } elseif ('SET NULL' === $type) {
-            $query .= ' UPDATE '.$table.' SET '.$definition['local'].' = NULL WHERE '.$definition['local'].' IN ('.$deletedQuery.');';
-        } elseif ('NO ACTION' === $type) {
-            return '';
-        } else {
-            throw new RuntimeException('Not implemented');
+        foreach ($models as $model) {
+            $record = new $model();
+            $table = $record->getTable();
+
+            $parents = $table->getOption('joinedParents');
+            if ($parents) {
+                foreach ($parents as $parent) {
+                    $parentTable = $table->getConnection()->getTable($parent);
+                    $triggers[] = $this->createCascadingDeleteTriggerSql($parentTable);
+                }
+            }
+
+            if ($table->getAttribute(Doctrine_Core::ATTR_EXPORT) & Doctrine_Core::EXPORT_PLUGINS) {
+                foreach ($this->getAllGenerators($table) as $name => $generator) {
+                    $_table = $generator->getTable();
+                    $triggers[] = $this->createCascadingDeleteTriggerSql($_table);
+                }
+            }
+
+            $triggers[] = $this->createCascadingDeleteTriggerSql($table);
+
+            $table->getRepository()->evict($record->getOid());
+            unset($record);
         }
 
-        $query .= ' DELETE FROM '.$table.' WHERE '.$definition['foreign'].' IN ('.$deletedQuery.');';
+        $triggers = array_unique($triggers);
 
-        $query .= ' END';
+        if ($groupByConnection) {
+            foreach ($sql as $k => $v) {
+                $sql[$k] = array_merge($v, $triggers);
+            }
+        } else {
+            $sql = array_merge($sql, $triggers);
+        }
+
+        return $sql;
+    }
+
+    public function createCascadingDeleteTriggerSql($table)
+    {
+        $query = '';
+
+        if ($table->getAttribute(Doctrine_Core::ATTR_EXPORT) === Doctrine_Core::EXPORT_NONE) {
+            return '';
+        }
+
+        $trigger = $this->conn->quoteIdentifier($table->getTableName().'_cascade_delete_trigger');
+        $query .= 'CREATE TRIGGER '.$trigger.' ON '.$this->conn->quoteIdentifier($table->getTableName()).' INSTEAD OF DELETE AS BEGIN ';
+        foreach ($table->getRelations() as $name => $relation) {
+            if (!($relation instanceof Doctrine_Relation_ForeignKey)) {
+                continue;
+            }
+
+            $deletedQuery = 'SELECT d.'.$relation->getLocalColumnName().' FROM [deleted] AS d';
+
+            $type = '';
+            foreach ($relation->getTable()->getRelations() as $_name => $_relation) {
+                if (!($_relation instanceof Doctrine_Relation_LocalKey)) {
+                    continue;
+                }
+
+                if ($table->getTableName() !== $_relation->getTable()->getTableName()) {
+                    continue;
+                }
+
+                if ($relation['foreign'] === $_relation['local']) {
+                    $type = strtoupper($_relation['onDelete']);
+
+                    break;
+                }
+            }
+
+            if (!$type) {
+                continue;
+            }
+
+            $foreignTable = $this->conn->quoteIdentifier($relation->getTable()->getTableName());
+            $foreignColumn = $this->conn->quoteIdentifier($relation->getForeignColumnName());
+            if ('CASCADE' === $type) {
+                $query .= 'DELETE FROM '.$foreignTable.' WHERE '.$foreignColumn.' IN ('.$deletedQuery.');';
+            } elseif ('SET NULL' === $type) {
+                $query .= 'UPDATE '.$foreignTable.' SET '.$foreignColumn.' = NULL WHERE '.$foreignColumn.' IN ('.$deletedQuery.');';
+            } elseif ('NO ACTION' === $type) {
+                return '';
+            } else {
+                throw new RuntimeException(sprintf('Not implemented for "%s" clause in %s of %s', $type, get_class($table), $name));
+            }
+        }
+
+        $ids = (array)$table->getIdentifier();
+        $where = ' EXISTS (SELECT '.implode(',', $ids).' FROM [deleted] AS d WHERE ';
+        foreach ($ids as $k => $id) {
+            if (0 < $k) {
+                $where .= ' AND ';
+            }
+            $where .= $id.' = d.'.$id;
+        }
+        $where .= ')';
+
+        $query .= 'DELETE FROM '.$this->conn->quoteIdentifier($table->getTableName()).' WHERE '.$where.';';
+        $query .= 'END';
 
         return $query;
     }
