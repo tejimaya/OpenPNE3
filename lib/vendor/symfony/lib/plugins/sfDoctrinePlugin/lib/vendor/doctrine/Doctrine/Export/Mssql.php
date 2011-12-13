@@ -463,12 +463,10 @@ class Doctrine_Export_Mssql extends Doctrine_Export
                 if (is_array($definition)) {
                     $trigger = '';
 
-                    if ($name == $definition['foreignTable']) {
-                        if ($definition['onDelete']) {
-                            $trigger = $this->createTriggerForSelfCascading($name, $definition, $definition['onDelete']);
-
-                            $definition['onDelete'] = 'NO ACTION';
-                        } elseif ($definition['onUpdate']) {
+                    if ($definition['onDelete']) {
+                        $definition['onDelete'] = 'NO ACTION';
+                    } elseif ($definition['onUpdate']) {
+                        if ($name == $definition['foreignTable']) {
                             throw new RuntimeException('Not implemented');
                         }
                     }
