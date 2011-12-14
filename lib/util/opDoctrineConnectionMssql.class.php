@@ -78,4 +78,23 @@ class opDoctrineConnectionMssql extends Doctrine_Connection_Mssql
 
       return $query;
   }
+
+    public function quoteIdentifier($str, $checkOption = true)
+    {
+      if (
+        // most-used in Doctrine
+        'id' === $str || 'created_at' === $str || 'updated_at' === $str || 'lft' === $str ||
+        'rgt' === $str || 'tree_key' === $str || 'level' === $str
+        // most-used in OpenPNE
+        || 'public_flag' === $str || 'is_active' === $str || 'body' === $str || 'title' === $str
+        || 'name' === $str || 'value' === $str
+        // won't be identifiers
+        || 1 === strlen($str)
+        || strpos($str, '__') || strpos($str, '_id'))
+      {
+        return $str;
+      }
+
+      return parent::quoteIdentifier($str, $checkOption);
+    }
 }
