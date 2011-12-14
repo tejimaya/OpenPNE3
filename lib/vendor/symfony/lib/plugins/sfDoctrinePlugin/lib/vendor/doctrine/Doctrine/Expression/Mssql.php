@@ -33,6 +33,16 @@
 class Doctrine_Expression_Mssql extends Doctrine_Expression_Driver
 {
     /**
+     * return string to call a function to get random value inside an SQL statement
+     *
+     * @return string to generate float between 0 and 1
+     */
+    public function random()
+    {
+        return 'RAND()';
+    }
+
+    /**
      * Return string to call a variable with the current timestamp inside an SQL statement
      * There are three special variables for current date and time:
      * - CURRENT_TIMESTAMP (date and time, TIMESTAMP type)
