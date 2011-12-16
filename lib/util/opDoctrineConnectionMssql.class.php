@@ -100,11 +100,6 @@ class opDoctrineConnectionMssql extends Doctrine_Connection_Mssql
           throw new Doctrine_Connection_Exception("modifyLimitQuery() must handles only SELECT query");
       }
 
-      $orderBy = $queryOrigin->getSqlQueryPart('orderby');
-      if ($offset !== false && !$orderBy) {
-          throw new Doctrine_Connection_Exception("OFFSET cannot be used in MSSQL without ORDER BY due to emulation reasons.");
-      }
-      
       $count = intval($limit);
       $offset = intval($offset);
 
@@ -112,6 +107,7 @@ class opDoctrineConnectionMssql extends Doctrine_Connection_Mssql
           throw new Doctrine_Connection_Exception("LIMIT argument offset=$offset is not valid");
       }
 
+      $orderBy = $queryOrigin->getSqlQueryPart('orderby');
       if ($orderBy) {
         $orderBySql = ' ORDER BY ' . implode(', ', $orderBy);
         $over = $orderBySql;
