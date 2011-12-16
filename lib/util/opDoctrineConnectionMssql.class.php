@@ -24,6 +24,58 @@ class opDoctrineConnectionMssql extends Doctrine_Connection_Mssql
     $this->setAttribute(Doctrine_Core::ATTR_QUOTE_IDENTIFIER, true);
   }
 
+  public function replaceNonAggregatedColumnsInSelectList($query, Doctrine_Query $queryOrigin = null)
+  {
+    if (!$queryOrigin)
+    {
+      return $query;
+    }
+
+    $groupBy = $queryOrigin->getSqlQueryPart('groupby');
+    if (!$groupBy)
+    {
+        return $query;
+    }
+
+    $selectList = explode(',', implode(',', $queryOrigin->getSqlQueryPart('select')));
+    foreach ($selectList as $key => $select)
+    {
+      // might be user-written selection item
+      if (false === strpos($select, ' AS '))
+      {
+        continue;
+      }
+
+      // might be aggregate function or sub-query
+      if (false !== strpos($select, '('))
+      {
+        continue;
+      }
+
+      $foundInGroupBy = false;
+      $parts = explode(' AS ', $select, 2);
+      foreach ($groupBy as $value)
+      {
+        if (false !== stripos($value, trim($parts[0])))
+        {
+          $foundInGroupBy = true;
+
+          break;
+        }
+      }
+
+      if (!$foundInGroupBy)
+      {
+        $parts[0] = 'MAX('.trim($parts[0]).')';
+      }
+
+      $pos = strpos($query, $select);
+      $query = substr($query, 0, $pos).$parts[0].' AS '.$parts[1].substr($query, $pos + strlen($select));
+    }
+
+    return $query;
+  }
+
   /**
    * Adds an adapter-specific LIMIT clause to the SELECT statement.
    *
@@ -37,7 +89,8 @@ class opDoctrineConnectionMssql extends Doctrine_Connection_Mssql
    */
   public function modifyLimitQuery($query, $limit = false, $offset = false, $isManip = false, $isSubQuery = false, Doctrine_Query $queryOrigin = null)
   {
-      $query = trim($query);
+      // NOTE: This method call is not related with a purpose of this method
+      $query = $this->replaceNonAggregatedColumnsInSelectList(trim($query), $queryOrigin);
 
       if ($limit === false || !($limit > 0)) {
           return $query; 
@@ -47,7 +100,8 @@ class opDoctrineConnectionMssql extends Doctrine_Connection_Mssql
           throw new Doctrine_Connection_Exception("modifyLimitQuery() must handles only SELECT query");
       }
 
-      if ($offset !== false && $orderby === false) {
+      $orderBy = $queryOrigin->getSqlQueryPart('orderby');
+      if ($offset !== false && !$orderBy) {
           throw new Doctrine_Connection_Exception("OFFSET cannot be used in MSSQL without ORDER BY due to emulation reasons.");
       }
       
@@ -58,7 +112,6 @@ class opDoctrineConnectionMssql extends Doctrine_Connection_Mssql
           throw new Doctrine_Connection_Exception("LIMIT argument offset=$offset is not valid");
       }
 
-      $orderBy = $queryOrigin->getSqlQueryPart('orderby');
       if ($orderBy) {
         $orderBySql = ' ORDER BY ' . implode(', ', $orderBy);
         $over = $orderBySql;
