@@ -128,22 +128,79 @@ class opDoctrineConnectionMssql extends Doctrine_Connection_Mssql
       return $query;
   }
 
-    public function quoteIdentifier($str, $checkOption = true)
+  public function quoteIdentifier($str, $checkOption = true)
+  {
+    if (
+      // most-used in Doctrine
+      'id' === $str || 'created_at' === $str || 'updated_at' === $str || 'lft' === $str ||
+      'rgt' === $str || 'tree_key' === $str || 'level' === $str
+      // most-used in OpenPNE
+      || 'public_flag' === $str || 'is_active' === $str || 'body' === $str || 'title' === $str
+      || 'name' === $str || 'value' === $str
+      // won't be identifiers
+      || 1 === strlen($str)
+      || strpos($str, '__') || strpos($str, '_id'))
     {
-      if (
-        // most-used in Doctrine
-        'id' === $str || 'created_at' === $str || 'updated_at' === $str || 'lft' === $str ||
-        'rgt' === $str || 'tree_key' === $str || 'level' === $str
-        // most-used in OpenPNE
-        || 'public_flag' === $str || 'is_active' === $str || 'body' === $str || 'title' === $str
-        || 'name' === $str || 'value' === $str
-        // won't be identifiers
-        || 1 === strlen($str)
-        || strpos($str, '__') || strpos($str, '_id'))
+      return $str;
+    }
+
+    return parent::quoteIdentifier($str, $checkOption);
+  }
+
+  public function convertPhpValueByDbType($value, $type)
+  {
+    if ('blob' === $type)
+    {
+      // TODO: Don't use raw file handler because OpenPNE can't close this in suitable timing
+      $fp = fopen('php://temp', 'rb+');
+      fwrite($fp, $value);
+      rewind($fp);
+
+      return $fp;
+    }
+
+    return $value;
+  }
+
+  /**
+   * Replaces bound parameters and their placeholders with explicit values.
+   *
+   * Workaround for http://bugs.php.net/36561
+   *
+   * @param string $query
+   * @param array $params
+   */
+  protected function replaceBoundParamsWithInlineValuesInQuery($query, array $params)
+  {
+    foreach($params as $key => $value)
+    {
+      $re = '/(?<=WHERE|VALUES|SET|JOIN)(.*?)(\?)/';
+      $query = preg_replace($re, "\\1##{$key}##", $query, 1);
+    }
+
+    $replacement = 'is_null($value) ? \'NULL\' : $this->quote($params[\\1])';
+    $conn = $this;
+    $query = preg_replace_callback('/##(\d+)##/', function ($matches) use ($value, $params, $conn) {
+      // This might be a mistake of the original code
+      if (is_null($value))
       {
-        return $str;
+        return 'NULL';
       }
 
-      return parent::quoteIdentifier($str, $checkOption);
-    }
+      $_value = $params[$matches[1]];
+
+      if (is_resource($_value))
+      {
+        $result = '0x'.bin2hex(stream_get_contents($_value));
+
+        fclose($_value);
+
+        return $result;
+      }
+
+      return $conn->quote($_value);
+    }, $query);
+
+    return $query;
+  }
 }

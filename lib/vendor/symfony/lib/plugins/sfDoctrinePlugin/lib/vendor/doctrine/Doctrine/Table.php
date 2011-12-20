@@ -2357,6 +2357,12 @@ class Doctrine_Table extends Doctrine_Configurable implements Countable
                     }
                     return $value;
                 break;
+                case 'blob':
+                    $conn = $this->getConnection();
+                    if ($conn instanceof opDoctrineConnectionMssql) {
+                        return pack('H*' , $value);
+                    }
+                break;
             }
         }
         return $value;
