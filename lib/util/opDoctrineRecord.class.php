@@ -221,7 +221,7 @@ abstract class opDoctrineRecord extends sfDoctrineRecord implements Zend_Acl_Res
       $conn = $this->getTable()->getConnection();
       if ($conn instanceof opDoctrineConnectionMssql)
       {
-        $result[$field] = $conn->convertPhpValueByDbType($data, $type);
+        $result[$field] = $conn->convertPhpValueByDbType($result[$field], $type);
       }
     }
 
