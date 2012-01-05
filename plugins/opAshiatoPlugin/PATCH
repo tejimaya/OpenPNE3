@@ -1,0 +1,31 @@
+diff --git a/plugins/opAshiatoPlugin/lib/model/doctrine/PluginAshiatoTable.class.php b/plugins/opAshiatoPlugin/lib/model/doctrine/PluginAshiatoTable.class.php
+index b85c57f..462bc35 100644
+--- a/plugins/opAshiatoPlugin/lib/model/doctrine/PluginAshiatoTable.class.php
++++ b/plugins/opAshiatoPlugin/lib/model/doctrine/PluginAshiatoTable.class.php
+@@ -21,14 +21,14 @@ class PluginAshiatoTable extends Doctrine_Table
+   {
+     $day_list = array();
+     $q = $this->createQuery()
+-      ->select('id, r_date')
++      ->select('DISTINCT r_date')
+       ->where('member_id_to = ?', $memberId)
+-      ->groupBy('r_date DESC')
++      ->orderBy('r_date DESC')
+       ->limit($size);
+ 
+     foreach ($q->execute(array(), Doctrine::HYDRATE_NONE) as $day)
+     {
+-      $day_list[] = $day[1];
++      $day_list[] = $day[0];
+     }
+ 
+     $q = $this->createQuery()
+@@ -38,7 +38,7 @@ class PluginAshiatoTable extends Doctrine_Table
+       ->andWhereIn('r_date', $day_list)
+       ->groupBy('member_id_from')
+       ->addGroupBy('r_date')
+-      ->orderBy('max_updated_at DESC');
++      ->orderBy('MAX(updated_at) DESC');
+ 
+     $pager = new opNonCountQueryPager('Ashiato', $size);
+     $pager->setQuery($q);
