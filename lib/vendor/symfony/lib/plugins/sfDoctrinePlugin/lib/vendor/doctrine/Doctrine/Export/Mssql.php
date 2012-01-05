@@ -633,12 +633,12 @@ class Doctrine_Export_Mssql extends Doctrine_Export
         }
 
         $ids = (array)$table->getIdentifier();
-        $where = ' EXISTS (SELECT '.implode(',', $ids).' FROM [deleted] AS d WHERE ';
+        $where = ' EXISTS (SELECT d.'.implode(', d.', $ids).' FROM [deleted] AS d WHERE ';
         foreach ($ids as $k => $id) {
             if (0 < $k) {
                 $where .= ' AND ';
             }
-            $where .= $id.' = d.'.$id;
+            $where .= $this->conn->quoteIdentifier($table->getTableName()).'.'.$id.' = d.'.$id;
         }
         $where .= ')';
 
