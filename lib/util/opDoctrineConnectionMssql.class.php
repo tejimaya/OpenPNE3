@@ -107,7 +107,17 @@ class opDoctrineConnectionMssql extends Doctrine_Connection_Mssql
           throw new Doctrine_Connection_Exception("LIMIT argument offset=$offset is not valid");
       }
 
-      $orderBy = $queryOrigin->getSqlQueryPart('orderby');
+      if ($queryOrigin)
+      {
+        $select = implode(', ', $queryOrigin->getSqlQueryPart('select'));
+        $orderBy = $queryOrigin->getSqlQueryPart('orderby');
+      }
+      else
+      {
+        $select = $this->extractSelect(stristr($query, 'SELECT'));
+        $orderBy = $this->extractOrderBy(stristr($query, 'ORDER BY'));
+      }
+
       if ($orderBy) {
         $orderBySql = ' ORDER BY ' . implode(', ', $orderBy);
         $over = $orderBySql;
@@ -118,14 +128,61 @@ class opDoctrineConnectionMssql extends Doctrine_Connection_Mssql
         $over = 'ORDER BY (SELECT 1)';
       }
 
-      $selectionList = preg_split('/,?\s*([^\s]+)\s+AS/', implode(', ', $queryOrigin->getSqlQueryPart('select')), -1, PREG_SPLIT_NO_EMPTY);
+      $selectionList = preg_split('/,?\s*([^\s]+)\s+AS/', $select, -1, PREG_SPLIT_NO_EMPTY);
       $selectionList = implode(', ', $selectionList);
 
+      // replace items of selection list if the item doesn't have alias
+      $selectionList = preg_replace('/[^ ]+\.([^ ]),?/', ' [op_tmp_row_number_tbl].$1', $selectionList);
+
       $query = substr($query, strlen('SELECT '));
+      if (0 === strpos(trim($query), 'DISTINCT'))
+      {
+        $query = substr(trim($query), strlen('DISTINCT'));
+        if (false === strpos($selectionList, 'DISTINCT'))
+        {
+          $selectionList = ' DISTINCT '.$selectionList;
+        }
+      }
       $query = 'SELECT '.$selectionList.' FROM (SELECT ROW_NUMBER() OVER ('.$over.') AS [op_row_number], '.$query.') AS [op_tmp_row_number_tbl]'
              . ' WHERE [op_row_number] BETWEEN '.($offset + 1).' AND '.($offset + $limit);
 
       return $query;
+  }
+
+  // copied from Doctrine_Connection_Mssql::parseOrderBy() (private method)
+  protected function extractOrderBy($orderby)
+  {
+    $matches = array();
+    $chunks  = array();
+    $tokens  = array();
+    $parsed  = str_ireplace('ORDER BY', '', $orderby);
+
+    preg_match_all('/(\w+\(.+?\)\s+(ASC|DESC)),?/', $orderby, $matches);
+    
+    $matchesWithExpressions = $matches[1];
+
+    foreach ($matchesWithExpressions as $match) {
+        $chunks[] = $match;
+        $parsed = str_replace($match, '##' . (count($chunks) - 1) . '##', $parsed);
+    }
+    
+    $tokens = preg_split('/,/', $parsed);
+    
+    for ($i = 0, $iMax = count($tokens); $i < $iMax; $i++) {
+        $tokens[$i] = trim(preg_replace('/##(\d+)##/e', "\$chunks[\\1]", $tokens[$i]));
+    }
+
+    return $tokens;
+  }
+
+  protected function extractSelect($sql)
+  {
+    if (!preg_match('/SELECT(.*)FROM/', $sql, $matches))
+    {
+      throw new RuntimeException('Non-SELECT query is not supported');
+    }
+
+    return $matches[1];
   }
 
   public function quoteIdentifier($str, $checkOption = true)
