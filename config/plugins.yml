@@ -1,0 +1,5 @@
+all:
+    install: true
+
+opAshiatoPlugin:
+    install: false

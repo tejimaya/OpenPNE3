@@ -4,6 +4,7 @@ log/*
 plugins/op*
 !plugins/opSkinBasicPlugin
 !plugins/opSkinClassicPlugin
+!plugins/opAshiatoPlugin
 plugins/.*
 lib/filter/doctrine/*
 cache/*
@@ -11,7 +12,6 @@ data/migrations/generated/*
 config/ProjectConfiguration.class.php
 config/databases.yml
 config/OpenPNE.yml
-config/plugins.yml
 lib/model/doctrine/base/*
 data/sql/*.*
 lib/form/doctrine/base/*
