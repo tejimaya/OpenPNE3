@@ -76,16 +76,16 @@ class Doctrine_DataDict_Mssql extends Doctrine_DataDict
 
                 $fixed  = ((isset($field['fixed']) && $field['fixed']) || $field['type'] == 'char') ? true : false;
 
-                return $fixed ? ($length ? 'CHAR('.$length.')' : 'CHAR('.$this->conn->varchar_max_length.')')
-                    : (($length && $length <= $this->conn->varchar_max_length) ? 'VARCHAR('.$length.')' : 'NVARCHAR(MAX)');
+                return $fixed ? ($length ? 'CHAR('.$length.') COLLATE JAPANESE_CI_AS' : 'CHAR('.$this->conn->varchar_max_length.') COLLATE JAPANESE_CI_AS')
+                    : (($length && $length <= $this->conn->varchar_max_length) ? 'VARCHAR('.$length.') COLLATE JAPANESE_CI_AS' : 'NVARCHAR(MAX) COLLATE JAPANESE_CI_AS');
             case 'clob':
                 if ( ! empty($field['length'])) {
                     $length = $field['length'];
                     if ($length <= 8000) {
-                        return 'VARCHAR('.$length.')';
+                        return 'VARCHAR('.$length.') COLLATE JAPANESE_CI_AS';
                     }
                  }
-                 return 'TEXT';
+                 return 'TEXT COLLATE JAPANESE_CI_AS';
             case 'blob':
                 if ( ! empty($field['length'])) {
                     $length = $field['length'];
