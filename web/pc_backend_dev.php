@@ -8,7 +8,9 @@
  * file and the NOTICE file that were distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../config/ProjectConfiguration.class.php');
+$rootPath = isset($_SERVER['AZURE_ROLE_ROOT']) ? $_SERVER['AZURE_ROLE_ROOT'].'/approot' : dirname(__FILE__).'/..';
+
+require_once($rootPath.'/config/ProjectConfiguration.class.php');
 
 $configuration = ProjectConfiguration::getApplicationConfiguration('pc_backend', 'dev', true);
 sfContext::createInstance($configuration)->dispatch();

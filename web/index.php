@@ -8,15 +8,17 @@
  * file and the NOTICE file that were distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../config/ProjectConfiguration.class.php');
+$rootPath = isset($_SERVER['AZURE_ROLE_ROOT']) ? $_SERVER['AZURE_ROLE_ROOT'].'/approot' : dirname(__FILE__).'/..';
+
+require_once($rootPath.'/config/ProjectConfiguration.class.php');
 
 // load opMobileUserAgent before initializing application
 $old_error_level = error_reporting();
 
 error_reporting($old_error_level & ~(E_STRICT | E_DEPRECATED));
 
-set_include_path(dirname(__FILE__).'/../lib/vendor/PEAR/'.PATH_SEPARATOR.get_include_path());
-require_once(dirname(__FILE__).'/../lib/util/opMobileUserAgent.class.php');
+set_include_path($rootPath.'/lib/vendor/PEAR/'.PATH_SEPARATOR.get_include_path());
+require_once($rootPath.'/lib/util/opMobileUserAgent.class.php');
 
 $is_mobile = !opMobileUserAgent::getInstance()->getMobile()->isNonMobile();
 

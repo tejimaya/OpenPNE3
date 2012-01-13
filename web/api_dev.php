@@ -7,7 +7,9 @@ if (!in_array(@$_SERVER['REMOTE_ADDR'], array('127.0.0.1', '::1')))
   die('You are not allowed to access this file. Check '.basename(__FILE__).' for more information.');
 }
 
-require_once(dirname(__FILE__).'/../config/ProjectConfiguration.class.php');
+$rootPath = isset($_SERVER['AZURE_ROLE_ROOT']) ? $_SERVER['AZURE_ROLE_ROOT'].'/approot' : dirname(__FILE__).'/..';
+
+require_once($rootPath.'/config/ProjectConfiguration.class.php');
 
 $configuration = ProjectConfiguration::getApplicationConfiguration('api', 'dev', true);
 sfContext::createInstance($configuration)->dispatch();
