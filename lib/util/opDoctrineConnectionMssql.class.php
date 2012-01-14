@@ -255,7 +255,13 @@ class opDoctrineConnectionMssql extends Doctrine_Connection_Mssql
         return $result;
       }
 
-      return $conn->quote($_value);
+      $result = $conn->quote($_value);
+      if (is_string($_value) && !ctype_digit($_value))
+      {
+        $result = 'N'.$result;
+      }
+
+      return $result;
     }, $query);
 
     return $query;
