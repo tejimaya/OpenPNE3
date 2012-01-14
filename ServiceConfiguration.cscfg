@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<ServiceConfiguration serviceName="OpenPNE3" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration">
+    <Role name="WebRole">
+        <Instances count="1" />
+        <ConfigurationSettings>
+            <Setting name="OPENPNE_DB_NAME" value="****" />
+            <Setting name="OPENPNE_DB_USER" value="****@****" />
+            <Setting name="OPENPNE_DB_PASSWORD" value="****" />
+            <Setting name="OPENPNE_DB_HOST" value="tcp:****.database.windows.net,1433" />
+            <Setting name="OPENPNE_SMTP_HOST" value="smtp.****.com" />
+            <Setting name="OPENPNE_SMTP_AUTH" value="login" />
+            <Setting name="OPENPNE_SMTP_USERNAME" value="****" />
+            <Setting name="OPENPNE_SMTP_PASSWORD" value="****" />
+            <Setting name="OPENPNE_SMTP_SSL" value="tls" />
+            <Setting name="OPENPNE_SMTP_PORT" value="587" />
+            <Setting name="OPENPNE_SECRET" value="****" />
+
+            <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
+
+            <!--
+            <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+            <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="****" />
+            <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="****" />
+            <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="****" />
+            <Setting name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.Enabled" value="true" />
+            -->
+        </ConfigurationSettings>
+
+        <!--
+        <Certificates>
+            <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="****" thumbprintAlgorithm="sha1" />
+        </Certificates>
+        -->
+    </Role>
+</ServiceConfiguration>

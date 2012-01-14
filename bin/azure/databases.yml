@@ -1,0 +1,7 @@
+all:
+  doctrine:
+    class: sfDoctrineDatabase
+    param:
+      dsn: "sqlsrv:Server=<?php echo azure_getconfig('OPENPNE_DB_HOST') ?>; Database=<?php echo azure_getconfig('OPENPNE_DB_NAME') ?>;"
+      username: "<?php echo azure_getconfig('OPENPNE_DB_USER') ?>"
+      password: "<?php echo azure_getconfig('OPENPNE_DB_PASSWORD') ?>"

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ServiceDefinition name="OpenPNE3" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition">
+    <WebRole name="WebRole" enableNativeCodeExecution="true">
+        <ConfigurationSettings>
+            <Setting name="OPENPNE_DB_NAME" />
+            <Setting name="OPENPNE_DB_USER" />
+            <Setting name="OPENPNE_DB_PASSWORD" />
+            <Setting name="OPENPNE_DB_HOST" />
+            <Setting name="OPENPNE_SMTP_HOST" />
+            <Setting name="OPENPNE_SMTP_AUTH" />
+            <Setting name="OPENPNE_SMTP_USERNAME" />
+            <Setting name="OPENPNE_SMTP_PASSWORD" />
+            <Setting name="OPENPNE_SMTP_SSL" />
+            <Setting name="OPENPNE_SMTP_PORT" />
+            <Setting name="OPENPNE_SECRET" />
+        </ConfigurationSettings>
+
+        <InputEndpoints>
+            <InputEndpoint name="HttpIn" protocol="http" port="80" />
+        </InputEndpoints>
+
+        <Imports>
+            <!-- Comment out RemoteAccess and RemoteForwarder before to release -->
+            <Import moduleName="RemoteAccess" />
+            <Import moduleName="RemoteForwarder" />
+            <Import moduleName="Diagnostics" />
+        </Imports>
+
+        <Sites>
+            <Site name="Web" physicalDirectory="./web">
+                <Bindings>
+                    <Binding name="HttpIn" endpointName="HttpIn" />
+                </Bindings>
+            </Site>
+        </Sites>
+        <Startup>
+            <Task commandLine="azure\Install.cmd" executionContext="elevated" taskType="simple" />
+        </Startup>
+
+        <LocalResources>
+            <LocalStorage name="FileCacheStorage" sizeInMB="1000" />
+            <LocalStorage name="FileLogStorage" sizeInMB="1000" />
+        </LocalResources>
+    </WebRole>
+</ServiceDefinition>
