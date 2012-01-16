@@ -260,6 +260,11 @@ class opDoctrineConnectionMssql extends Doctrine_Connection_Mssql
         return $result;
       }
 
+      if (is_object($_value) && is_callable(array($_value, '__toString')))
+      {
+        $_value = (string)$_value;
+      }
+
       $result = $conn->quote($_value);
       if (is_string($_value) && !ctype_digit($_value))
       {
