@@ -14,6 +14,7 @@ class opTemplateRendererTwig extends sfTemplateRendererTwig
     }
 
     $this->environment->addExtension(new HelperTwigExtension());
+    $this->environment->setCache(sfConfig::get('sf_cache_dir'));
   }
 
   public function evaluate(sfTemplateStorage $template, array $parameters = array())
