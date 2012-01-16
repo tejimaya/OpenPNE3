@@ -169,7 +169,12 @@ class opDoctrineConnectionMssql extends Doctrine_Connection_Mssql
     $tokens = preg_split('/,/', $parsed);
     
     for ($i = 0, $iMax = count($tokens); $i < $iMax; $i++) {
-        $tokens[$i] = trim(preg_replace('/##(\d+)##/e', "\$chunks[\\1]", $tokens[$i]));
+        $token = trim(preg_replace('/##(\d+)##/e', "\$chunks[\\1]", $tokens[$i]));
+        if ('' === $token) {
+            unset($tokens[$i]);
+        } else {
+            $tokens[$i] = $token;
+        }
     }
 
     return $tokens;
