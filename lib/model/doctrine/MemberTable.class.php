@@ -178,7 +178,7 @@ class MemberTable extends opAccessControlDoctrineTable
       $updateTimes[] = $configTable
         ->createQuery('m')
         ->where('m.member_id = ?', $memberId)
-        ->AndWhere('m.name = "register_token"')
+        ->AndWhere('m.name = ?', 'register_token')
         ->fetchOne()
         ->getUpdatedAt();
     }
