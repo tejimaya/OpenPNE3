@@ -6,3 +6,6 @@ opAshiatoPlugin:
 
 opOpenSocialPlugin:
     install: false
+
+opMessagePlugin:
+    install: false
