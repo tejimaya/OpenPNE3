@@ -21,6 +21,7 @@ error_reporting(error_reporting() & ~(E_STRICT | E_DEPRECATED));
 class opPlugin
 {
   private static $instances = array();
+  private static $manager = null;
 
   protected
     $name,
@@ -38,6 +39,11 @@ class opPlugin
       $this->isActive = $config[$pluginName];
     }
 
+    if (!self::$manager)
+    {
+      self::$manager = new opPluginManager($dispatcher);
+    }
+
     $info = $this->getPackageInfo();
     if ($info)
     {
@@ -46,8 +52,7 @@ class opPlugin
     }
     else
     {
-      $manager = new opPluginManager($dispatcher);
-      $package = $manager->getEnvironment()->getRegistry()->getPackage($pluginName, opPluginManager::getDefaultPluginChannelServerName());
+      $package = self::$manager->getEnvironment()->getRegistry()->getPackage($pluginName, opPluginManager::getDefaultPluginChannelServerName());
       if ($package)
       {
         $this->version = $package->getVersion();
