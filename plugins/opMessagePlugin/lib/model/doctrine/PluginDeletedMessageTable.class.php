@@ -101,6 +101,7 @@ class PluginDeletedMessageTable extends Doctrine_Table
         if (!$deleted_message) {
           $deleted_message = new DeletedMessage();
         }
+        $deleted_message->setMessageId(0);
         $deleted_message->setMessageSendListId($message_id);
       } elseif ($object_name == 'SendMessageData') {
         $message = Doctrine::getTable('SendMessageData')->findOneByIdAndMemberId($message_id, $member_id);
@@ -109,6 +110,7 @@ class PluginDeletedMessageTable extends Doctrine_Table
           $deleted_message = new DeletedMessage();
         }
         $deleted_message->setMessageId($message_id);
+        $deleted_message->setMessageSendListId(0);
       } elseif ($object_name == 'DeletedMessage') {
         $message = $this->findOneByIdAndMemberId($message_id, $member_id);
         $deleted_message = null;
