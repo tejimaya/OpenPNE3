@@ -9,3 +9,6 @@ opOpenSocialPlugin:
 
 opMessagePlugin:
     install: false
+
+opAlbumPlugin:
+    install: false

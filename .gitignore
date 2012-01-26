@@ -6,6 +6,7 @@ plugins/op*
 !plugins/opSkinClassicPlugin
 !plugins/opAshiatoPlugin
 !plugins/opMessagePlugin
+!plugins/opAlbumPlugin
 plugins/.*
 lib/filter/doctrine/*
 cache/*
