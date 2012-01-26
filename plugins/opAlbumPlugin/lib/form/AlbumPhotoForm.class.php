@@ -66,6 +66,7 @@ class AlbumPhotoForm extends sfForm
       $albumImage = new AlbumImage();
       $albumImage->setAlbum($this->albumInstance);
       $albumImage->setFile($file);
+      $albumImage->setFilesize(0);
       $albumImage->setDescription($description);
       $albumImage->save();
     }

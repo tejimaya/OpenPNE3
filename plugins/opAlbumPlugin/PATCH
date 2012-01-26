@@ -1,0 +1,11 @@
+diff -ur a/opAlbumPlugin/lib/form/AlbumPhotoForm.class.php b/opAlbumPlugin/lib/form/AlbumPhotoForm.class.php
+--- a/opAlbumPlugin/lib/form/AlbumPhotoForm.class.php	2012-01-26 23:12:54.000000000 +0900
++++ b/opAlbumPlugin/lib/form/AlbumPhotoForm.class.php	2012-01-11 22:19:50.000000000 +0900
+@@ -66,6 +66,7 @@
+       $albumImage = new AlbumImage();
+       $albumImage->setAlbum($this->albumInstance);
+       $albumImage->setFile($file);
++      $albumImage->setFilesize(0);
+       $albumImage->setDescription($description);
+       $albumImage->save();
+     }
