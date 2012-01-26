@@ -3,3 +3,6 @@ all:
 
 opAshiatoPlugin:
     install: false
+
+opOpenSocialPlugin:
+    install: false
