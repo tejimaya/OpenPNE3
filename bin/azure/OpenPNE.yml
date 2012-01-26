@@ -64,7 +64,7 @@ sid_secret: "<?php echo azure_getconfig('OPENPNE_SECRET') ?>"
 #   database を選択した場合、扱えるセッション ID の文字列長 128 までとなります。必要に応じて session.hash_function と session.hash_bits_per_character の値を調節してください
 #   (If you use "database", you can handle 128 length session id. Tune session.hash_function and session.hash_bits_per_character for your needs)
 session_storage:
-  name: "file"
+  name: "database"
   options:
 
 # セッション存続時間設定

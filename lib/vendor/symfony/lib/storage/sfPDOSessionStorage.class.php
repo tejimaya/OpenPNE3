@@ -107,7 +107,7 @@ class sfPDOSessionStorage extends sfDatabaseSessionStorage
       $sql = 'SELECT '.$db_data_col.' FROM '.$db_table.' WHERE '.$db_id_col.'=?';
 
       $stmt = $this->db->prepare($sql);
-      $stmt->bindParam(1, $id, PDO::PARAM_STR, 255);
+      $stmt->bindParam(1, $id, PDO::PARAM_STR);
 
       $stmt->execute();
       // it is recommended to use fetchAll so that PDO can close the DB cursor
