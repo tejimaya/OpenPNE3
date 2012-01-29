@@ -1,0 +1,89 @@
+=========================
+OpenPNE for Windows Azure
+=========================
+
+設置方法
+========
+
+0. はじめに
+-----------
+
+このドキュメントを読む前に、以下の手順をおこなってください。
+
+* Windows Azure アカウントを取得し、管理ポータルにアクセスできるようにする
+* Windows Azure の有効なサブスクリプションを取得する
+* SQL Azure のデータベースを管理ポータルから作成する
+* 任意の SMTP サーバを用意する (OpenPNE からのメール送信に必要)
+
+1. 設定
+-------
+
+Azure 版の zip アーカイブを展開したあとのディレクトリに存在する ServiceConfiguration.cscfg を環境に合わせて編集します。
+
+設定の必要があるのは以下の項目です。
+
+OPENPNE_DB_NAME
+    SQL Azure のデータベース名を指定します。
+
+OPENPNE_DB_USER
+    SQL Azure のユーザ名を指定します。ユーザ名は {管理者ユーザ名}@{サーバ名} の形式になります。
+
+OPENPNE_DB_PASSWORD
+    SQL Azure のパスワードを指定します。
+
+OPENPNE_DB_HOST
+    SQL Azure のホスト名を指定します。ホスト名の形式はたとえば ``tcp:{サーバ名}.database.windows.net,1433`` となります。
+
+OPENPNE_SMTP_HOST
+    任意の外部 SMTP サーバのホスト名を指定します。
+
+OPENPNE_SMTP_AUTH
+    SMTP 認証を使用する場合の認証方式です。 ``plain`` 、 ``login`` 、 ``cram-md5`` のいずれかを選択してください。
+
+OPENPNE_SMTP_USERNAME
+    SMTP 認証に使用するユーザ名です。
+
+OPENPNE_SMTP_PASSWORD
+    SMTP 認証に使用するパスワードです。
+
+OPENPNE_SMTP_SSL
+    SMTP 通信に TLS / SSL のどちらを用いるかを選択します。
+
+OPENPNE_SMTP_PORT
+    SMTP サーバのポート番号を指定します。
+
+OPENPNE_SECRET
+    CSRF トークンなどに使用する任意の文字列をシークレットとして指定します。
+
+2. デプロイ
+-----------
+
+管理ポータルのホステッドサービスの管理画面から、同梱の OpenPNE3.cspkg をデプロイしてください。
+
+バージョンアップ方法
+====================
+
+バージョンアップしたい Azure 版の zip アーカイブを展開したあとのディレクトリに存在する ServiceConfiguration.cscfg を現在の設定値に置き換えたうえで、新しい OpenPNE3.cspkg をデプロイしてください。
+
+メジャーバージョンアップには現在非対応です。たとえば、 Windows Azure 版 OpenPNE 3.6.x で運用している SNS を OpenPNE 3.6.y にアップデートすることはできますが、 OpenPNE 3.8.z や OpenPNE 3.10.w にアップデートすることはできません。この制限は、アップデート先の機能改善 (先の例では OpenPNE 3.8.z や OpenPNE 3.10.w 側の対応) によって将来的に撤廃される予定です。
+
+Windows Azure 版における制限
+============================
+
+Windows Azure 版では、通常の OpenPNE 3 に存在する以下の機能が使用できません。
+
+* 携帯メール投稿
+* OpenSocial 関連機能 (opOpenSocialPlugin)
+
+(開発者向け) Azure 版パッケージ作成手順
+=======================================
+
+zip 圧縮のソースディレクトリ内で、以下のコマンドを実行してください::
+
+    cspack.exe \Path\To\OpenPNE\ServiceDefinition.csdef /role:WebRole;\Path\To\OpenPNE /out:OpenPNE3.cspkg
+
+その後、 ServiceConfiguration.cscfg をコピーしてください::
+
+    copy \Path\To\OpenPNE\ServiceConfiguration.cscfg .
+
+最後に、このディレクトリを zip 圧縮してください。
