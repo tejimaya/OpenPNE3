@@ -15,19 +15,6 @@ reg add "hku\.default\software\microsoft\windows\currentversion\explorer\user sh
 reg add "hku\.default\software\microsoft\windows\currentversion\explorer\user shell folders" /v "Local AppData" /t REG_EXPAND_SZ /d %%USERPROFILE%%\AppData\Local /f
 
 copy "..\php_azure.dll" "%ProgramFiles(x86)%\php\v5.3\ext"
-copy "..\php_apc.dll" "%ProgramFiles(x86)%\php\v5.3\ext"
-
-find "extension=php_azure.dll" "%ProgramFiles(x86)%\php\v5.3\php.ini"
-IF ERRORLEVEL 1 (
-    ECHO "" >> "%ProgramFiles(x86)%\php\v5.3\php.ini"
-    ECHO "extension=php_azure.dll" >> "%ProgramFiles(x86)%\php\v5.3\php.ini"
-)
-
-find "extension=php_apc.dll" "%ProgramFiles(x86)%\php\v5.3\php.ini"
-IF ERRORLEVEL 1 (
-    ECHO "" >> "%ProgramFiles(x86)%\php\v5.3\php.ini"
-    ECHO "extension=php_apc.dll" >> "%ProgramFiles(x86)%\php\v5.3\php.ini"
-)
 
 cd ".."
 
@@ -45,14 +32,15 @@ ECHO "Completed PHP Installation" >> log.txt
 
 ECHO "Starting OpenPNE Installation" >> log.txt
 
-copy "databases.yml" "../../config"
-copy "OpenPNE.yml" "../../config"
+"%ProgramFiles(x86)%\php\v5.3\php.exe" -d enable_dl=On createConfig.php
 
 cd "../../"
 
 "%ProgramFiles(x86)%\php\v5.3\php.exe" symfony opPlugin:sync >>bin/azure/log.txt 2>>bin/azure/err.txt
 
-"%ProgramFiles(x86)%\php\v5.3\php.exe" bin/azure/checkDBExists.php
+"%ProgramFiles(x86)%\php\v5.3\php.exe" symfony cc >>bin/azure/log.txt 2>>bin/azure/err.txt
+
+"%ProgramFiles(x86)%\php\v5.3\php.exe" -d enable_dl=On bin/azure/checkDBExists.php
 IF ERRORLEVEL 1 (
     ECHO "Starting Database Initialization" >> bin/azure/log.txt
     "%ProgramFiles(x86)%\php\v5.3\php.exe" symfony doctrine:build --all --and-load --no-confirmation >>bin/azure/log.txt 2>>bin/azure/err.txt
