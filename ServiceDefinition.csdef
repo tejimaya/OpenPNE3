@@ -34,6 +34,7 @@
             </Site>
         </Sites>
         <Startup>
+            <Task commandLine="azure\Env.cmd" executionContext="elevated" taskType="simple" />
             <Task commandLine="azure\Install.cmd" executionContext="elevated" taskType="simple" />
         </Startup>
 
