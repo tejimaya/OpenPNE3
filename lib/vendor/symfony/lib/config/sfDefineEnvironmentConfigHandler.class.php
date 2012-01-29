@@ -29,6 +29,9 @@ class sfDefineEnvironmentConfigHandler extends sfYamlConfigHandler
    */
   public function execute($configFiles)
   {
+    // FIXME: avoid php-cgi.exe in Windows Azure to crash
+    error_log('Started to execute '.get_class($this).'::'.__FUNCTION__.'()');
+
     // get our prefix
     $prefix = strtolower($this->getParameterHolder()->get('prefix', ''));
 
