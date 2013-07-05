@@ -16,7 +16,6 @@ login:
   name: "ログイン画面"
   layout:
     default: layoutA
-    choices: [layoutA, layoutB, layoutC]
   plot_action: [design, loginGadgetPlot]
 
 sideBanner:

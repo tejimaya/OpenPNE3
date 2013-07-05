@@ -8,8 +8,7 @@
 
 <ul>
 <?php foreach ($configs as $key => $config): ?>
-<!--<li><?php echo link_to($config['name'].'レイアウト設定', 'design/layout?type='.$key) ?></li>-->
-<li><?php if ($config['name'] != 'ログイン画面') echo link_to($config['name'].'レイアウト設定', 'design/layout?type='.$key) ?></li>
+<li><?php echo link_to($config['name'].'レイアウト設定', 'design/layout?type='.$key) ?></li>
 <?php endforeach; ?>
 </ul>
 
