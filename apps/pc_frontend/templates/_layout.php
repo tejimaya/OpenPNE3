@@ -81,6 +81,25 @@ include_component('default', 'localNav', $localNavOptions);
 <?php if (has_slot('op_sidemenu')): ?>
 <div id="Left">
 <?php include_slot('op_sidemenu') ?>
+
+<?php if (opConfig::get('opt_ad_free') == 0): ?>
+<?php
+echo<<<EOM
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-5836291027790450";
+/* pne.jp_250×250 */
+google_ad_slot = "8175424807";
+google_ad_width = 250;
+google_ad_height = 250;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+EOM;
+?>
+<?php endif;?>
+
 </div><!-- Left -->
 <?php endif; ?>
 
@@ -98,6 +117,37 @@ include_component('default', 'localNav', $localNavOptions);
 
 <div id="sideBanner">
 <?php include_component('default', 'sideBannerGadgets'); ?>
+
+<?php if (opConfig::get('opt_ad_free') == 0): ?>
+<?php 
+echo <<<EOM
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-5836291027790450";
+/* pne.jp_160×600_1*/
+google_ad_slot = "3745225209";
+google_ad_width = 160;
+google_ad_height = 600;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-5836291027790450";
+/* pne.jp_160×600_2*/
+google_ad_slot = "5221958404";
+google_ad_width = 160;
+google_ad_height = 600;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+EOM;
+?>
+<?php endif;?>
+
 </div><!-- sideBanner -->
 
 </div><!-- ContentsContainer -->
