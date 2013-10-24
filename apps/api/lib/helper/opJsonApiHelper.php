@@ -58,8 +58,19 @@ function op_api_member_profile_url($memberId)
 
 function op_api_activity($activity)
 {
+  use_helper('opActivity');
+
   $viewMemberId = sfContext::getInstance()->getUser()->getMemberId();
   $member = $activity->getMember();
+
+  $images = array();
+  foreach ($activity->getImages() as $activityImage)
+  {
+    $images[] = array(
+      'small_size' => op_activity_image_uri($activityImage, array('size' => '48x48'), true),
+      'full_size' => op_activity_image_uri($activityImage, array(), true),
+    );
+  }
 
   return array(
     'id' => $activity->getId(),
@@ -69,6 +80,7 @@ function op_api_activity($activity)
     'uri' => $activity->getUri(),
     'source' => $activity->getSource(),
     'source_uri' => $activity->getSourceUri(),
+    'image_uris' => $images,
     'created_at' => date('r', strtotime($activity->getCreatedAt())),
   );
 }

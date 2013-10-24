@@ -79,7 +79,7 @@ class Member extends BaseMember implements opAccessControlRecordInterface
       return $age;
     }
 
-    if (ProfileTable::PUBLIC_FLAG_WEB == $publicFlag && Doctrine::getTable('SnsConfig')->get('is_allow_web_public_flag_age'))
+    if (ProfileTable::PUBLIC_FLAG_WEB == $publicFlag && opConfig::get('is_allow_web_public_flag_age'))
     {
       return $age;
     }
@@ -313,6 +313,12 @@ class Member extends BaseMember implements opAccessControlRecordInterface
       $adminCommunityMember = $communityMemberTable->retrieveByMemberIdAndCommunityId($this->getId(), $communityId);
       $adminCommunityMember->delete();
     }
+
+    foreach ($this->getMemberImage() as $memberImage)
+    {
+      $memberImage->delete();
+    }
+
     return parent::delete($conn);
   }
 

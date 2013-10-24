@@ -10,11 +10,7 @@
 <?php if ($activity->getImages()->count()): ?>
 <?php $images = $activity->getImages() ?>
 <?php for ($i = 0; $i < $images->count() && $i < 3;$i++): ?>
-<?php if ($images[$i]->getFileId()): ?>
-<?php echo op_image_tag_sf_image($images[$i]->getFile(), array('size' => '48x48')) ?>
-<?php else: ?>
-<?php echo op_image_tag($images[$i]->getUri(), array('width' => 48, 'height' => 48)) ?>
-<?php endif; ?>
+<?php echo op_activity_image_tag($images[$i], array('size' => '48x48')) ?>
 <?php endfor; ?>
 <br />
 <?php endif; ?>
@@ -40,7 +36,7 @@ if (!isset($isOperation) || $isOperation)
   {
     $operationItems[] = array(
       'class' => 'delete',
-      'body'  => link_to(__('Delete'), 'member/deleteActivity?id='.$activity->getId(), array('title' => __('Delete this activity of %time%', array('%time%' => $time)))),
+      'body'  => link_to(__('Delete'), 'member/deleteActivity?id='.$activity->getId(), array('title' => __('Delete this %activity% of %time%', array('%time%' => $time)))),
     );
   }
 }
