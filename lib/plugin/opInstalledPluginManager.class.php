@@ -29,8 +29,13 @@ class opInstalledPluginManager
       {
         unset($result[$k]);
       }
-    }
 
+      // 連絡網プラグインを設定できないように変更
+      if ('opRenrakumouPlugin' === $v->getName())
+      {
+        unset($result[$k]);
+      }
+    }
     return $result;
   }
 
