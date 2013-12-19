@@ -8,7 +8,18 @@
  * file and the NOTICE file that were distributed with this source code.
  */
 
-if (!defined('OPENPNE_VERSION'))
+/**
+ * opZendMailTransportMock
+ *
+ * @package    OpenPNE
+ * @subpackage util
+ * @author     Kimura Youichi <kim.upsilon@bucyou.net>
+ */
+class opZendMailTransportMock extends Zend_Mail_Transport_Abstract
 {
-  define('OPENPNE_VERSION', '3.8.9');
+  public $EOL = "\n";
+
+  public function _sendMail()
+  {
+  }
 }
