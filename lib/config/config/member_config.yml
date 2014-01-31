@@ -38,9 +38,9 @@ publicFlag:
     Caption:    "Public Flag for Age"
     FormType:   "select"
     ValueType:  "integer"
-    IsRegist:   true
+    IsRegist:   false
     IsConfig:   true
-    IsRequired: true
+    IsRequired: false
     IsUnique:   false
     IsConfirm:  false
     Default: 3

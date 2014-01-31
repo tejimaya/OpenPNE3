@@ -19,7 +19,6 @@ abstract class opAuthRegisterForm extends BaseForm
 {
   public
     $memberForm,
-    $profileForm,
     $configForm;
 
   protected
@@ -46,8 +45,6 @@ abstract class opAuthRegisterForm extends BaseForm
     }
 
     $this->memberForm = new MemberForm($this->getMember(), array(), false);
-    $this->profileForm = new MemberProfileForm($this->getMember()->getProfiles(), array(), false);
-    $this->profileForm->setRegisterWidgets();
     $this->configForm = new MemberConfigForm($this->getMember(), array(), false);
 
     parent::__construct($defaults, $options, false);
@@ -105,8 +102,7 @@ abstract class opAuthRegisterForm extends BaseForm
   {
     $result = (string)$this->memberForm
             . (string)$this->configForm
-            . parent::__toString()
-            . (string)$this->profileForm;
+            . parent::__toString();
     return $result;
   }
 
@@ -118,7 +114,6 @@ abstract class opAuthRegisterForm extends BaseForm
   public function bindAll($request)
   {
     $this->memberForm->bind($request->getParameter('member'));
-    $this->profileForm->bind($request->getParameter('profile'));
     $this->configForm->bind($request->getParameter('member_config'));
     $this->bind($request->getParameter('auth', array(
       'mobile_uid'        => '',
@@ -167,11 +162,10 @@ abstract class opAuthRegisterForm extends BaseForm
     $member = $this->memberForm->save();
     $this->setMember($member);
 
-    $profile = $this->profileForm->save($this->getMember()->getId());
     $config = $this->configForm->save($this->getMember()->getId());
     $auth = $this->doSave();
 
-    if ($member && $profile && $auth && $config)
+    if ($member && $auth && $config)
     {
       if ($this->getValue('mobile_uid'))
       {
@@ -217,7 +211,6 @@ abstract class opAuthRegisterForm extends BaseForm
   public function isValidAll()
   {
     return ($this->memberForm->isValid()
-      && $this->profileForm->isValid()
       && $this->configForm->isValid()
       && $this->isValid()
     );
@@ -230,6 +223,6 @@ abstract class opAuthRegisterForm extends BaseForm
 
   public function getAllForms()
   {
-    return array($this->memberForm, $this->profileForm, $this, $this->configForm);
+    return array($this->memberForm, $this, $this->configForm);
   }
 }
