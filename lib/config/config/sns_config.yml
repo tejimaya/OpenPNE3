@@ -80,7 +80,7 @@ general:
     FormType:   "radio"
     ValueType:  "text"
     IsRequired: true
-    Default:    1
+    Default:    0
     Choices:
       - "使用しない"
       - "使用する"
