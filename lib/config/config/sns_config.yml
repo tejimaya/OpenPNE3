@@ -47,7 +47,7 @@ general:
     ValueType: "text"
     IsRequired: true
     IsTrim:     true
-    Default:    1
+    Default:    0
     Choices:
       - "使用しない"
       - "使用する"
@@ -232,7 +232,7 @@ authentication:
     FormType:  "radio"
     ValueType: "integer"
     IsRequired: true
-    Default:    3
+    Default:    2
     Choices:
       3: "PC・携帯両方から登録可"
       2: "PCからのみ登録可"
