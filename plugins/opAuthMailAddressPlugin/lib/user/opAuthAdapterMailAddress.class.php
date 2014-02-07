@@ -38,6 +38,18 @@ class opAuthAdapterMailAddress extends opAuthAdapter
       {
         $token->delete();
       }
+
+      if ($courseIdPre = Doctrine::getTable('MemberConfig')->retrieveByNameAndMemberId('course_id_pre', $member->id))
+      {
+        $courseMember = new ChokinbakoMember;
+        $courseMember->chokinbako_course_id = $courseIdPre->value;
+        $courseMember->member_id = $member->id;
+        $courseMember->webpay_customer_id = $member->getConfig('webpay_customer_id');
+        $courseMember->save();
+        $courseMember->free(true);
+
+        $courseIdPre->delete();
+      }
     }
 
     return $member;
