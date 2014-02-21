@@ -50,6 +50,6 @@ class opAuthAction extends sfActions
       opMailSend::sendTemplateMailToMember('registerEnd', $member, $params);
     }
 
-    $this->redirect('@homepage');
+    $this->setTemplate('registerEnd', 'member');
   }
 }
