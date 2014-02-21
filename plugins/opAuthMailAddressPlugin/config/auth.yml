@@ -1,5 +1,5 @@
 invite_mode:
-  Default: 1
+  Default: 2
 
 enable_mobile:
   Default: 0
