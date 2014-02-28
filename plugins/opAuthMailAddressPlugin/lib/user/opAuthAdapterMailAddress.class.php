@@ -55,7 +55,6 @@ class opAuthAdapterMailAddress extends opAuthAdapter
         {
           $communityMember = Doctrine_Core::getTable('CommunityMember')->join($member->id, $course->community_id);
         }
-        $communityMember->free(true);
         $course->free(true);
 
         $courseIdPre->delete();
