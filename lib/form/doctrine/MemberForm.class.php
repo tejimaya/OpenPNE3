@@ -32,6 +32,13 @@ class MemberForm extends BaseMemberForm
     $this->widgetSchema->getFormFormatter()->setTranslationCatalogue('form_member');
   }
 
+  protected function updateDefaultsFromObject()
+  {
+    parent::updateDefaultsFromObject();
+
+    $this->setDefault('name', $this->getObject()->getRawName());
+  }
+
   protected function doSave($con = null)
   {
     if ($this->isNew()) {

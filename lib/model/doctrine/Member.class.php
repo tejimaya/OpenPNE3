@@ -109,6 +109,16 @@ class Member extends BaseMember implements opAccessControlRecordInterface
     return count(Doctrine::getTable('MemberRelationship')->getFriendMemberIds($this->getId()));
   }
 
+  public function getName()
+  {
+    return $this->getRawName().' '.opShogoUtil::getMemberShogoText($this);
+  }
+
+  public function getRawName()
+  {
+    return $this->_get('name');
+  }
+
   public function getNameAndCount($format = '%s (%d)')
   {
     if (!opConfig::get('enable_friend_link'))
