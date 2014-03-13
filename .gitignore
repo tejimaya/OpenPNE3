@@ -3,7 +3,6 @@ web/cache/*
 log/*
 plugins/op*
 !plugins/opAuthMailAddressPlugin
-!plugins/opSkinBasicPlugin
 plugins/.*
 lib/filter/doctrine/*
 cache/*

@@ -97,7 +97,7 @@ abstract class opApplicationConfiguration extends sfApplicationConfiguration
     if (1 !== count(array_keys($skinPlugins, true)))
     {
       $skinPlugins = array_fill_keys(array_keys($skinPlugins), false);
-      $skinPlugins['opSkinBasicPlugin'] = true;
+      $skinPlugins['opSkinThemePlugin'] = true;
     }
 
     return array_merge($pluginList, $skinPlugins);
