@@ -37,14 +37,19 @@ class opAuthAction extends sfActions
 
     if ($member->getEmailAddress())
     {
+      $generatedPassword = opToolkit::getRandom(16);
+      $member->setConfig('password', md5($generatedPassword));
+
       $i18n = sfContext::getInstance()->getI18N();
       $params = array(
         'subject' => $i18n->__('Notify of Your Registering'),
         'url'     => $this->getController()->genUrl(array('sf_route' => 'homepage'), true),
+        'mail_address' => $member->getConfig('pc_address'),
+        'password' => $generatedPassword,
       );
       opMailSend::sendTemplateMailToMember('registerEnd', $member, $params);
     }
 
-    $this->redirect('@homepage');
+    $this->setTemplate('registerEnd', 'member');
   }
 }

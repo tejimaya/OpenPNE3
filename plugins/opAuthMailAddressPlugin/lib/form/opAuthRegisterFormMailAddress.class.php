@@ -20,26 +20,8 @@ class opAuthRegisterFormMailAddress extends opAuthRegisterForm
   public function configure()
   {
     parent::configure();
-    $this->configForm->setMemberConfigWidget('secret_question');
-    $this->configForm->setMemberConfigWidget('secret_answer');
 
-    // Hack for non-rendering secret answer
-    $this->configForm->getWidget('secret_answer')->setOption('type', 'text');
-    
     $this->mergePostValidator(new sfValidatorCallback(array('callback' => array($this, 'validateMemberConfig'))));
-  }
-
-  public function bindAll($request)
-  {
-    // this is just hack for limitation of MemberConfigForm
-    if (isset($request['member_config']['secret_answer']))
-    {
-      $memberConfig = $request['member_config'];
-      $memberConfig['secret_answer'] = md5($memberConfig['secret_answer']);
-      $request['member_config'] = $memberConfig;
-    }
-
-    parent::bindAll($request);
   }
 
   public function doSave()

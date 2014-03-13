@@ -161,6 +161,9 @@ pc:
           
           We hope that using {{ op_config.sns_name }} is useful for your future.
           
+          Mail address: {{ mail_address }}
+          Password: {{ password }}
+          
           {{ url }}
           
           *Don't you remember this registration?
@@ -176,6 +179,9 @@ pc:
           
           {{ op_config.sns_name }} が、あなたの今後に役立ちますように、是非、ご活用いただければと思います。
           
+          メールアドレス：{{ mail_address }}
+          パスワード：{{ password }}
+          
           {{ url }}
           
           ◆登録した覚えがない方へ
@@ -185,6 +191,8 @@ pc:
           {{ op_config.admin_mail_address }}
     variables:
       "op_config.sns_name": "SNS 名"
+      "mail_address": "登録されたメールアドレス"
+      "password": "自動生成されたパスワード"
       "url": "ログインページへの URL"
       "op_config.admin_mail_address": "管理者のメールアドレス"
 

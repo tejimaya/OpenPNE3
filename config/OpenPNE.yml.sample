@@ -244,3 +244,10 @@ mobile_proxys:
 # Configuration of using cookie with mobile (only if it can use)
 #
 is_use_mobile_cookie: true
+
+####################################
+# ちょきんばこ設定
+####################################
+
+# メンバーコースに設定できる最低金額
+chokinbako_minimum_course_amount: 500

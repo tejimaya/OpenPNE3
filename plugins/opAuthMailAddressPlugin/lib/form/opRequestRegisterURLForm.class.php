@@ -25,6 +25,9 @@ class opRequestRegisterURLForm extends BaseForm
   {
     $this->disableLocalCSRFProtection();
 
+    $this->setWidget('course_id', new sfWidgetFormDoctrineChoice(array('model' => 'ChokinbakoCourse')));
+    $this->setValidator('course_id', new sfValidatorDoctrineChoice(array('model' => 'ChokinbakoCourse')));
+
     $this->setWidget('mail_address', new sfWidgetFormInputText());
     $this->setValidator('mail_address', new sfValidatorPass());
 
@@ -110,6 +113,8 @@ class opRequestRegisterURLForm extends BaseForm
     {
       $member = Doctrine::getTable('Member')->createPre();
     }
+
+    $member->setConfig('course_id_pre', $this->getValue('course_id'));
 
     if ($this->getValue('pc_address'))
     {

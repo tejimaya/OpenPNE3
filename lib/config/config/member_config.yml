@@ -38,9 +38,9 @@ publicFlag:
     Caption:    "Public Flag for Age"
     FormType:   "select"
     ValueType:  "integer"
-    IsRegist:   true
+    IsRegist:   false
     IsConfig:   true
-    IsRequired: true
+    IsRequired: false
     IsUnique:   false
     IsConfirm:  false
     Default: 3
@@ -95,7 +95,7 @@ password:
     Info:       "Password must be 6-12 characters."
     FormType:   "password"
     ValueType:  "password"
-    IsRegist:   true
+    IsRegist:   false
     IsConfig:   true
     IsUnique:   false
     IsRequired: true
