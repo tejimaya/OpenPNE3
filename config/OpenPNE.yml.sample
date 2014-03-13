@@ -244,10 +244,3 @@ mobile_proxys:
 # Configuration of using cookie with mobile (only if it can use)
 #
 is_use_mobile_cookie: true
-
-boundioMode: "develop"
-userSerialId: "QRF2HF4G3KBB984L"
-appId: "eSxAwZ1qzHY5Bpy6"
-authKey: "YLed9hIDGxxhzfRSkxusR0SmMj1UKdXt"
-smtpUserName: "noreply@pne.jp"
-smtpPassword: "RvUa83Xo4uYNyLqq"
