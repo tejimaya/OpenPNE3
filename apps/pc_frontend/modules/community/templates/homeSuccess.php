@@ -73,7 +73,7 @@ op_include_parts('listBox', 'communityHome', $options);
 <li><?php echo link_to(__('Edit this %community%'), '@community_edit?id=' . $community->getId()) ?></li>
 <?php endif; ?>
 
-<?php if (!$isAdmin): ?>
+<?php if (!$isAdmin && '2' !== $community->id): ?>
 <?php if ($isCommunityMember): ?>
 <li><?php echo link_to(__('Leave this %community%'), '@community_quit?id=' . $community->getId()) ?></li>
 <?php else : ?>

@@ -217,6 +217,7 @@ abstract class opCommunityAction extends sfActions
   {
     $this->community = Doctrine::getTable('Community')->find($this->id);
     $this->forward404Unless($this->community);
+    $this->forward404If('2' === $this->community->id);
 
     if ($this->isCommunityMember || $this->isCommunityPreMember)
     {
@@ -251,6 +252,8 @@ abstract class opCommunityAction extends sfActions
   */
   public function executeQuit(opWebRequest $request)
   {
+    $this->forward404If('2' === $this->community->id);
+
     if (!$this->isCommunityMember || $this->isAdmin)
     {
       return sfView::ERROR;

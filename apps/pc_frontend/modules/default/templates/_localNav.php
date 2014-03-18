@@ -2,6 +2,12 @@
 <ul class="<?php echo $type; ?>">
 <?php foreach ($navs as $nav): ?>
 
+<?php if ('community' === $type && '2' === $navId): ?>
+<?php if (in_array(op_url_to_id($nav->uri), array('_community_join', '_community_quit'))): ?>
+<?php continue ?>
+<?php endif ?>
+<?php endif ?>
+
 <?php if (isset($navId)): ?>
 <?php $uri = $nav->uri.'?id='.$navId; ?>
 <?php else: ?>
