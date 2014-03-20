@@ -55,7 +55,7 @@ foreach ($communitySubAdmins as $m)
   <td>
   <?php if ($isEditCommunity) : ?>
   <?php endif; ?>
-  <?php if (!$isAdmin) : ?>
+  <?php if (!$isAdmin && '2' !== $community->id): ?>
   <?php if ($isCommunityMember) : ?>
   <p id="leaveCommunityLink"><a href="#" id="leaveCommunity"><?php echo __('Leave this %community%', array('%community%' => $op_term['community']->titleize())) ?></a></p>
   <p id="leaveCommunityLoading" class="hide"><?php echo op_image_tag('ajax-loader.gif') ?></p>

@@ -60,7 +60,7 @@ foreach ($communitySubAdmins as $m)
 <?php if ($isEditCommunity) : ?>
 <?php echo link_to(__('Edit %community%'), '@community_edit?id=' . $community->getId()) ?><br>
 <?php endif; ?>
-<?php if (!$isAdmin) : ?>
+<?php if (!$isAdmin && '2' !== $community->id) : ?>
 <?php if ($isCommunityMember) : ?>
 <?php echo link_to(__('Quit %community%'), '@community_quit?id=' . $community->getId()) ?><br>
 <?php else : ?>
