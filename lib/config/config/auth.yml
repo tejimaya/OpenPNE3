@@ -28,7 +28,7 @@ enable_mobile:
   Caption:   "携帯版有効設定"
   FormType:  "radio"
   ValueType: "text"
-  IsConfig:   true
+  IsConfig:   false
   IsRequired: true
   Default:    1
   Choices:

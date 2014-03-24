@@ -40,17 +40,17 @@ general:
       - "使用しない"
       - "使用する"
 
-  enable_mobile:
-    Name:      "enable_mobile"
-    Caption:   "携帯版使用設定"
-    FormType:  "radio"
-    ValueType: "text"
-    IsRequired: true
-    IsTrim:     true
-    Default:    0
-    Choices:
-      - "使用しない"
-      - "使用する"
+#  enable_mobile:
+#    Name:      "enable_mobile"
+#    Caption:   "携帯版使用設定"
+#    FormType:  "radio"
+#    ValueType: "text"
+#    IsRequired: true
+#    IsTrim:     true
+#    Default:    0
+#    Choices:
+#      - "使用しない"
+#      - "使用する"
 
   enable_friend_link:
     Name:       "enable_friend_link"
@@ -212,15 +212,15 @@ external_login_page:
     IsRequired: false
     IsTrim:   true
 
-  external_mobile_login_url:
-    Name:     "external_mobile_login_url"
-    Caption:  "携帯版外部ログインページURL"
-    Help:     "携帯版でログアウトした場合やログインに失敗した場合、ここで指定したURLに遷移します<br />※ここで指定するページにはログインフォームを置いておく必要があります<br />※通常のログインページを使用する場合は空欄にしておきます"
-    FormType: "input"
-    ValueType: "text"
-    Default:   ""
-    IsRequired: false
-    IsTrim:   true
+#  external_mobile_login_url:
+#    Name:     "external_mobile_login_url"
+#    Caption:  "携帯版外部ログインページURL"
+#    Help:     "携帯版でログアウトした場合やログインに失敗した場合、ここで指定したURLに遷移します<br />※ここで指定するページにはログインフォームを置いておく必要があります<br />※通常のログインページを使用する場合は空欄にしておきます"
+#    FormType: "input"
+#    ValueType: "text"
+#    Default:   ""
+#    IsRequired: false
+#    IsTrim:   true
 
 authentication:
   _attributes:
@@ -234,56 +234,56 @@ authentication:
     IsRequired: true
     Default:    2
     Choices:
-      3: "PC・携帯両方から登録可"
+#      3: "PC・携帯両方から登録可"
       2: "PCからのみ登録可"
-      1: "携帯からのみ登録可"
+#      1: "携帯からのみ登録可"
       0: "登録一時停止"
 
-mobile:
-  _attributes:
-    Caption: "Mobile Configuration"
-    Advanced: true
-
-  retrieve_uid:
-    Name:      "retrieve_uid"
-    Caption:   "メンバー登録時の携帯個体識別番号取得設定"
-    FormType:  "radio"
-    ValueType: "integer"
-    IsRequired: true
-    Default:    1
-    Choices:
-      3: "PC・携帯登録時に携帯個体識別番号の登録を必須にする"
-      2: "携帯登録時に携帯個体識別番号の登録を必須にする"
-      1: "携帯登録時に携帯個体識別番号を取得する（任意）"
-      0: "携帯登録時には携帯個体識別番号を取得しない"
-  font_size:
-    Name:    "font_size"
-    Caption: "携帯版フォントサイズ指定設定"
-    FormType:  "radio"
-    ValueType: "integer"
-    IsRequired: true
-    Default:    0
-    Choices:
-      1: "フォントサイズを指定する"
-      0: "フォントサイズを指定しない"
-  is_check_mobile_ip:
-    Name:    "is_check_mobile_ip"
-    Caption: "携帯電話のIP帯域設定"
-    FormType:  "radio"
-    ValueType: "integer"
-    IsRequired: true
-    Default:    1
-    Choices:
-      1: "携帯電話のIP帯域をチェックする"
-      0: "携帯電話のIP帯域をチェックしない"
-  mobile_image_max_size:
-    Name:        "mobile_image_max_size"
-    Caption:     "画像の最大サイズ設定"
-    Help:        "許可されている画像サイズを\"横x縦\"で指定してください。<br />(空欄の場合フルサイズになります)"
-    FormType:    "image_size"
-    ValueType:   "image_size"
-    IsRequired:  false
-    Default:     "320x320"
+#mobile:
+#  _attributes:
+#    Caption: "Mobile Configuration"
+#    Advanced: true
+#
+#  retrieve_uid:
+#    Name:      "retrieve_uid"
+#    Caption:   "メンバー登録時の携帯個体識別番号取得設定"
+#    FormType:  "radio"
+#    ValueType: "integer"
+#    IsRequired: true
+#    Default:    1
+#    Choices:
+#      3: "PC・携帯登録時に携帯個体識別番号の登録を必須にする"
+#      2: "携帯登録時に携帯個体識別番号の登録を必須にする"
+#      1: "携帯登録時に携帯個体識別番号を取得する（任意）"
+#      0: "携帯登録時には携帯個体識別番号を取得しない"
+#  font_size:
+#    Name:    "font_size"
+#    Caption: "携帯版フォントサイズ指定設定"
+#    FormType:  "radio"
+#    ValueType: "integer"
+#    IsRequired: true
+#    Default:    0
+#    Choices:
+#      1: "フォントサイズを指定する"
+#      0: "フォントサイズを指定しない"
+#  is_check_mobile_ip:
+#    Name:    "is_check_mobile_ip"
+#    Caption: "携帯電話のIP帯域設定"
+#    FormType:  "radio"
+#    ValueType: "integer"
+#    IsRequired: true
+#    Default:    1
+#    Choices:
+#      1: "携帯電話のIP帯域をチェックする"
+#      0: "携帯電話のIP帯域をチェックしない"
+#  mobile_image_max_size:
+#    Name:        "mobile_image_max_size"
+#    Caption:     "画像の最大サイズ設定"
+#    Help:        "許可されている画像サイズを\"横x縦\"で指定してください。<br />(空欄の場合フルサイズになります)"
+#    FormType:    "image_size"
+#    ValueType:   "image_size"
+#    IsRequired:  false
+#    Default:     "320x320"
 
 policy:
   _attributes:
