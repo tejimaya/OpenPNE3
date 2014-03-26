@@ -22,6 +22,7 @@
 <?php end_slot(); ?>
 <?php include_slot('pager') ?>
 <?php foreach ($pager->getResults() as $community): ?>
+<?php if ('2' !== $community->getId()): ?>
 <?php $moreInfo = array(
   link_to(__('Delete'), 'community/delete?id='.$community->getId()),
   link_to(__('Make all members join in this %community%'), 'community/addAllMember?id='.$community->getId())
@@ -30,6 +31,10 @@
 <?php $moreInfo[] = link_to(__('Add this %community% as a default'), 'community/addDefaultCommunity?id='.$community->getId()) ?>
 <?php else: ?>
 <?php $moreInfo[] = link_to(__('Remove this %community% from the default'), 'community/removeDefaultCommunity?id='.$community->getId()) ?>
+<?php endif; ?>
+<?php else: ?>
+<?php $moreInfo = array(
+) ?>
 <?php endif; ?>
 <?php include_partial('community/communityInfo', array(
   'community' => $community, 
