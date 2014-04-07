@@ -28,6 +28,11 @@ class opRequestRegisterURLForm extends BaseForm
     $this->setWidget('course_id', new sfWidgetFormDoctrineChoice(array('model' => 'ChokinbakoCourse')));
     $this->setValidator('course_id', new sfValidatorDoctrineChoice(array('model' => 'ChokinbakoCourse')));
 
+    $this->setWidget('option', new sfWidgetFormInputHidden());
+    $this->setValidator('option', new sfValidatorPass(array(
+      'required' => false,
+    )));
+
     $this->setWidget('mail_address', new sfWidgetFormInputText());
     $this->setValidator('mail_address', new sfValidatorPass());
 
@@ -115,6 +120,12 @@ class opRequestRegisterURLForm extends BaseForm
     }
 
     $member->setConfig('course_id_pre', $this->getValue('course_id'));
+
+    $registerOption = $this->getValue('option');
+    if (null !== $registerOption && 1 === preg_match('/^[0-9A-Za-z]+$/', $registerOption))
+    {
+      $member->setConfig('register_option_pre', $registerOption);
+    }
 
     if ($this->getValue('pc_address'))
     {

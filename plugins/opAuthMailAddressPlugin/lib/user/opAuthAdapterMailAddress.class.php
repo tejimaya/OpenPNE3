@@ -59,6 +59,13 @@ class opAuthAdapterMailAddress extends opAuthAdapter
 
         $courseIdPre->delete();
       }
+
+      if ($registerOptionPre = Doctrine::getTable('MemberConfig')->retrieveByNameAndMemberId('register_option_pre', $member->id))
+      {
+        $registerOptionPre->name = 'register_option';
+        $registerOptionPre->save();
+        $registerOptionPre->free(true);
+      }
     }
 
     return $member;
