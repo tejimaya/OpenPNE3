@@ -191,6 +191,8 @@ abstract class opMemberAction extends sfActions
       }
     }
 
+    $this->getResponse()->addMeta('viewport', 'width=800, initial-scale=1');
+
     return sfView::SUCCESS;
   }
 
