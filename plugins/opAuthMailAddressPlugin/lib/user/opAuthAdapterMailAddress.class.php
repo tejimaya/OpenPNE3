@@ -66,6 +66,18 @@ class opAuthAdapterMailAddress extends opAuthAdapter
         $registerOptionPre->save();
         $registerOptionPre->free(true);
       }
+
+      // メンバー登録が完了した日時を member_config に記録する
+      // 招待メールが送信された日 (member.created_at) と登録が完了した日は必ずしも一致しないためこの値が必要となる
+
+      $registrationDate = new MemberConfig;
+      $registrationDate->fromArray(array(
+        'member_id' => $member->id,
+        'name' => 'registration_date',
+        'value_datetime' => date('Y-m-d H:i:s'),
+      ));
+      $registrationDate->save();
+      $registrationDate->free(true);
     }
 
     return $member;
