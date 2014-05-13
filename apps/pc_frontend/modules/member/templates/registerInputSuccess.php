@@ -6,3 +6,20 @@ $options = array(
 );
 op_include_form('RegisterForm', $form, $options);
 ?>
+
+<style>
+#scrollTop {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+
+  display: block;
+  width: 90px;
+  height: 25px;
+  background-color: #fff;
+
+  line-height: 25px;
+  text-align: center;
+}
+</style>
+<a id="scrollTop" href="#top">TOPへ戻る</a>
