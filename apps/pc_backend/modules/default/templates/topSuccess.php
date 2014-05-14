@@ -22,7 +22,7 @@ function getDashboard(str)
 '); ?>
 
 <div id="versionInformation" style="display: none;"></div>
-<script type="text/javascript" src="http://update.openpne.jp/?callback=getVersion&version=<?php echo OPENPNE_VERSION ?>"></script>
+<script type="text/javascript" src="//update.openpne.jp/?callback=getVersion&version=<?php echo OPENPNE_VERSION ?>"></script>
 
 <div id="dashboard" style="display: none;"></div>
-<script type="text/javascript" src="http://pne.jp/info.php?callback=getDashboard"></script>
+<script type="text/javascript" src="//xpne.info/info.php?callback=getDashboard"></script>
