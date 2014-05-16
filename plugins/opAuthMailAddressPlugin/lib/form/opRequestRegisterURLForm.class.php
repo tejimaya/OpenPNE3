@@ -36,6 +36,12 @@ class opRequestRegisterURLForm extends BaseForm
     $this->setWidget('mail_address', new sfWidgetFormInputText());
     $this->setValidator('mail_address', new sfValidatorPass());
 
+    $this->setWidget('agree_terms', new sfWidgetFormInputCheckbox(array('value_attribute_value' => '1')));
+    $this->setValidator('agree_terms', new sfValidatorChoice(array('choices' => array('1'))));
+
+    sfContext::getInstance()->getConfiguration()->loadHelpers(array('Tag', 'Url'));
+    $this->widgetSchema->setLabel('agree_terms', link_to('利用規約', 'default/userAgreement').'に同意する');
+
     $callback = new sfValidatorCallback(array(
         'callback' => array($this, 'validate'),
     ));
