@@ -90,7 +90,7 @@ function getDashboard(str)
       入会用HTMLタグを応募サイトに貼り付け
       <div class="step-body">
         <p>&#8251;下記フォームでコースを選択し、HTMLタグをサイトに貼り付けてください。</p>
-        <?php echo $coursesWidget->getRawValue()->render('courses') ?>
+        <?php echo $coursesWidget->getRawValue()->render('courses', false) ?>
         <textarea id="register-html" cols="80" rows="8"></textarea>
         <div id="form-template" style="display: none">
 <form method="post" action="<?php echo app_url_for('pc_frontend', 'opAuthMailAddress/requestRegisterURL', true) ?>">

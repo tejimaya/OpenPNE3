@@ -27,6 +27,7 @@ class topAction extends sfAction
     $this->coursesWidget = new sfWidgetFormDoctrineChoice(array(
       'model' => 'ChokinbakoCourse',
       'expanded' => true,
+      'add_empty' => 'コースは入会時に選択させる',
     ));
 
     return sfView::SUCCESS;
