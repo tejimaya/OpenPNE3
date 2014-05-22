@@ -9,7 +9,7 @@
 
 <script type="text/javascript">
 (function($){
-  var agreeTermsButton = $('#requestRegister_url_agree_terms')
+  var agreeTermsButton = $('#request_register_url_agree_terms')
   var submitButton = $('#requestRegisterURL input[type="submit"]')
 
   submitButton.prop('disabled', !agreeTermsButton.prop('checked'))
