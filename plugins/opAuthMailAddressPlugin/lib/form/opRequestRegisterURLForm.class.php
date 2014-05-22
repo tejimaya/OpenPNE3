@@ -40,7 +40,7 @@ class opRequestRegisterURLForm extends BaseForm
     $this->setValidator('agree_terms', new sfValidatorChoice(array('choices' => array('1'))));
 
     sfContext::getInstance()->getConfiguration()->loadHelpers(array('Tag', 'Url'));
-    $this->widgetSchema->setLabel('agree_terms', link_to('利用規約', 'default/userAgreement').'に同意する');
+    $this->widgetSchema->setLabel('agree_terms', link_to('利用規約', 'default/userAgreement', array('target' => '_blank')).'に同意する');
 
     $callback = new sfValidatorCallback(array(
         'callback' => array($this, 'validate'),
