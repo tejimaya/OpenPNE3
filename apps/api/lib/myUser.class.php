@@ -64,6 +64,14 @@ class myUser extends sfBasicSecurityUser
       throw $exception->setHttpStatusCode(401);
     }
 
+    $currentRouteName = sfContext::getInstance()->getRouting()->getCurrentRouteName();
+
+    if (1 === (int)$member->id && 'topic_index' !== $currentRouteName)
+    {
+      $exception = new opErrorHttpException('You are not permitted to access this endpoint.');
+      throw $exception->setHttpStatusCode(401);
+    }
+
     $this->member = $member;
 
     return $member;
