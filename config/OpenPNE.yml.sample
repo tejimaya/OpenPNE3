@@ -104,7 +104,7 @@ check_session_site_identifier: true
 
 # 特定ページでの SSL を使用するかどうか
 # Configuration of using SSL
-use_ssl: false
+use_ssl: true
 
 # SSL用URL (Cookie の値を引き継ぐため、 base_url と同一ドメイン・パスである必要があります)
 # Base URL for SSL (Set same domain and same path with "base_url" configuration to take over a value of Cookie)
