@@ -7,7 +7,7 @@ general:
     Caption:  "SNS名"
     FormType: "input"
     ValueType: "text"
-    Default:   "MySNS"
+    Default:   "PNE.club"
     IsRequired: true
 
   sns_title:
