@@ -1,6 +1,6 @@
 Member:
   first_member:
-    name: "OpenPNE君"
+    name: "管理者アカウント"
     is_active: 1
 
 MemberConfig:
