@@ -251,3 +251,6 @@ is_use_mobile_cookie: true
 
 # メンバーコースに設定できる最低金額
 chokinbako_minimum_course_amount: 500
+
+# メンバーコースに設定できる最高金額
+chokinbako_maximum_course_amount: 20000
