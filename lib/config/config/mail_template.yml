@@ -210,6 +210,8 @@ pc:
       "op_config.sns_name": "SNS 名"
       "member.name": "退会者のニックネーム"
 
+<?php if ('0' === opConfig::get('disable_mail_birthday_dailynews', '0')): ?>
+
   birthday:
     caption: "Notification of Friend Birthday"
     configurable: true
@@ -294,6 +296,8 @@ pc:
       "op_config.sns_name": "SNS 名"
       "member.name": "メンバーのニックネーム"
       "gadgets": "デイリー・ニュースのガジェットの配列"
+
+<?php endif ?>
 
   signature:
     caption: "Signature"
@@ -540,6 +544,8 @@ mobile:
       "op_config.sns_name": "SNS 名"
       "member.name": "退会者のニックネーム"
 
+<?php if ('0' === opConfig::get('disable_mail_birthday_dailynews', '0')): ?>
+
   birthday:
     caption: "Notification of Friend Birthday"
     configurable: true
@@ -624,6 +630,8 @@ mobile:
       "op_config.sns_name": "SNS 名"
       "member.name": "メンバーのニックネーム"
       "gadgets": "デイリー・ニュースのガジェットの配列"
+
+<?php endif ?>
 
   signature:
     caption: "Signature"
