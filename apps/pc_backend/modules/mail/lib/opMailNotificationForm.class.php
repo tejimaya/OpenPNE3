@@ -23,6 +23,11 @@ class opMailNotificationForm extends sfForm
 
     foreach ($config as $target => $mails)
     {
+      if ('mobile' === $target)
+      {
+        continue;
+      }
+
       foreach ($mails as $k => $v)
       {
         $fieldName = $target.'_'.$k;

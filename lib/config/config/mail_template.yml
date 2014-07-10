@@ -221,6 +221,8 @@ pc:
       "op_config.sns_name": "SNS 名"
       "member.name": "退会者のニックネーム"
 
+<?php if ('0' === opConfig::get('disable_mail_birthday_dailynews', '0')): ?>
+
   birthday:
     caption: "Notification of Friend Birthday"
     configurable: true
@@ -305,6 +307,8 @@ pc:
       "op_config.sns_name": "SNS 名"
       "member.name": "メンバーのニックネーム"
       "gadgets": "デイリー・ニュースのガジェットの配列"
+
+<?php endif ?>
 
   signature:
     caption: "Signature"
@@ -550,91 +554,6 @@ mobile:
     variables:
       "op_config.sns_name": "SNS 名"
       "member.name": "退会者のニックネーム"
-
-  birthday:
-    caption: "Notification of Friend Birthday"
-    configurable: true
-    member_configurable: true
-    sample:
-      en:
-        - "There is {{ member.name }}'s {{ op_term.my_friend }} that its birthday is coming soon"
-        - |
-          There is {{ member.name }}'s {{ op_term.my_friend }} that its birthday is coming soon.
-          We suggest you to send birthday message to your friend.
-          
-          Birthday : {{ birthMember.profile.op_preset_birthday|date("m/d") }}
-          {{ op_term.nickname }} : {{ birthMember.name }}
-          URL : {{ sf_config.op_base_url }}{% app_url_for("mobile_frontend", "@member_profile?id="~birthMember.id) %}
-          
-          We hope that using {{ op_config.sns_name }} is useful for your future.
-      ja_JP:
-        - "{{ member.name }} さんの {{ op_term.my_friend }} に誕生日の近い方がいます！"
-        - |
-          {{ member.name }} さんの {{ op_term.my_friend }} に誕生日の近い方がいます！
-          日ごろの感謝をこめて、誕生日の日にお祝いのメッセージを送ってみてはいかがですか。
-          
-          誕生日 : {{ birthMember.profile.op_preset_birthday|date("m 月 d 日") }}
-          {{ op_term.nickname }} : {{ birthMember.name }}
-          URL : {{ sf_config.op_base_url }}{% app_url_for("mobile_frontend", "@member_profile?id="~birthMember.id) %}
-          
-          {{ op_config.sns_name }} が、あなたの今後に役立ちますように、是非、ご活用いただければと思います。
-    variables:
-      "member.name": "メンバーのニックネーム"
-      "op_term.my_friend": "「マイフレンド」の SNS 名称"
-      "op_term.nickname": "「ニックネーム」の SNS 名称"
-      "birthMember.profile.op_preset_birthday": "誕生日を迎えたメンバーの誕生日"
-      "birthMember.name": "誕生日を迎えたメンバーのニックネーム"
-      "sf_config.op_base_url": "ベースの URL"
-
-  dailyNews:
-    caption: "Daily News"
-    configurable: true
-    member_configurable: true
-    sample:
-      en:
-        - "Daily News"
-        - |
-          --- {{ sf_config.op_base_url }} -----------------------------
-          
-          {{ op_config.sns_name }}
-          
-          Today News  [{{ 'now'|date('Y. m. d/D') }}]
-         
-          ----------------------------------------------------------
-          
-          Hi, {{ member.name }}!
-          
-          This is daily news in {{ op_config.sns_name }}.
-          
-          {% for item in gadgets %}
-          {% include_component(item.component.module, item.component.action, ['gadget': item.gadget]) %}
-          
-          {% endfor %}
-      ja_JP:
-        - "デイリーニュース"
-        - |
-          ━━ {{ sf_config.op_base_url }} ━━━━━━━━━━━━━━━━
-          
-          {{ op_config.sns_name }}
-          
-          本日の最新情報  [{{ 'now'|date('Y. m. d/D') }}]
-          
-          ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          
-          {{ member.name }} さん
-          
-          {{ op_config.sns_name }} からの
-          本日の最新情報のお知らせです。
-          
-          {% for item in gadgets %}
-          {% include_component(item.component.module, item.component.action, ['gadget': item.gadget]) %}
-          
-          {% endfor %}
-    variables:
-      "sf_config.op_base_url": "ベースの URL"
-      "op_config.sns_name": "SNS 名"
-      "member.name": "メンバーのニックネーム"
-      "gadgets": "デイリー・ニュースのガジェットの配列"
 
   signature:
     caption: "Signature"
