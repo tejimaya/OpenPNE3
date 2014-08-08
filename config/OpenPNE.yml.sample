@@ -254,3 +254,6 @@ chokinbako_minimum_course_amount: 500
 
 # メンバーコースに設定できる最高金額
 chokinbako_maximum_course_amount: 20000
+
+# コース数の上限
+chokinbako_courses_limit: 3
