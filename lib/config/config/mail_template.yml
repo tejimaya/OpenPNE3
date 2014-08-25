@@ -164,7 +164,11 @@ pc:
           Mail address: {{ mail_address }}
           Password: {{ password }}
           
+          {% if from_tsudo %}
           {% app_url_for('pc_frontend', '@tsudo_index', true) %}
+          {% else %}
+          {{ url }}
+          {% endif %}
           
           *Don't you remember this registration?
           If you think that any your friends shouldn't invite you and you haven't tried registration, please inform to the following e-mail address.
@@ -182,8 +186,12 @@ pc:
           メールアドレス：{{ mail_address }}
           パスワード：{{ password }}
           
+          {% if from_tsudo %}
           引き続きサービスを購入される場合はこちらから
           {% app_url_for('pc_frontend', '@tsudo_index', true) %}
+          {% else %}
+          {{ url }}
+          {% endif %}
           
           ※会費の請求日は、月の最終日です。
           ※前日までにクレジットカード情報が有効であるかご確認をお願いいたします。

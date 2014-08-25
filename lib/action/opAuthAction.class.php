@@ -40,12 +40,17 @@ class opAuthAction extends sfActions
       $generatedPassword = opToolkit::getRandom(16);
       $member->setConfig('password', md5($generatedPassword));
 
+      $fromTsudo = (int)ChokinbakoMemberTable::getInstance()->createQuery('cm')
+        ->andWhere('cm.member_id = ?', $member->id)
+        ->count() === 0;
+
       $i18n = sfContext::getInstance()->getI18N();
       $params = array(
         'subject' => $i18n->__('Notify of Your Registering'),
         'url'     => $this->getController()->genUrl(array('sf_route' => 'homepage'), true),
         'mail_address' => $member->getConfig('pc_address'),
         'password' => $generatedPassword,
+        'from_tsudo' => $fromTsudo,
       );
       opMailSend::sendTemplateMailToMember('registerEnd', $member, $params);
     }
