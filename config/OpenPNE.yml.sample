@@ -257,3 +257,6 @@ chokinbako_maximum_course_amount: 20000
 
 # コース数の上限
 chokinbako_courses_limit: 3
+
+# メールでのログ送信
+chokinbako_log_mail_address: support@pne.jp
