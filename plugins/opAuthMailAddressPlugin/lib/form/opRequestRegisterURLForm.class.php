@@ -26,7 +26,10 @@ class opRequestRegisterURLForm extends BaseForm
     $this->disableLocalCSRFProtection();
 
     $this->setWidget('course_id', new sfWidgetFormDoctrineChoice(array('model' => 'ChokinbakoCourse')));
-    $this->setValidator('course_id', new sfValidatorDoctrineChoice(array('model' => 'ChokinbakoCourse')));
+    $this->setValidator('course_id', new sfValidatorDoctrineChoice(array(
+      'model' => 'ChokinbakoCourse',
+      'required' => false,
+     )));
 
     $this->setWidget('option', new sfWidgetFormInputHidden());
     $this->setValidator('option', new sfValidatorPass(array(
@@ -125,7 +128,11 @@ class opRequestRegisterURLForm extends BaseForm
       $member = Doctrine::getTable('Member')->createPre();
     }
 
-    $member->setConfig('course_id_pre', $this->getValue('course_id'));
+    $courseId = $this->getValue('course_id');
+    if (null !== $courseId)
+    {
+      $member->setConfig('course_id_pre', $courseId);
+    }
 
     $registerOption = $this->getValue('option');
     if (null !== $registerOption && 1 === preg_match('/^[0-9A-Za-z]+$/', $registerOption))
